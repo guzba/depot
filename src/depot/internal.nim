@@ -1,4 +1,4 @@
-import std/endians, std/strutils
+import std/bitops, std/endians, std/strutils
 
 const k = [
   0x428a2f98'u32, 0x71374491'u32, 0xb5c0fbcf'u32, 0xe9b5dba5'u32,
@@ -241,8 +241,71 @@ proc sha256*(s: string): array[32, uint8] =
       usedIntrinsics = true
 
   if not usedIntrinsics:
-    for i in 0 ..< data.len div 64:
-      discard
+    # See https://blog.boot.dev/cryptography/how-sha-2-works-step-by-step-sha-256/
+    var
+      pos: int
+      w: array[64, uint32]
+    for _ in 0 ..< data.len div 64:
+      # Copy 64 bytes (16 uint32) into w from data
+      # This cannot just be a copyMem due to byte ordering
+      for i in 0 ..< 16:
+        var value: uint32
+        swapEndian32(value.addr, data[pos + i * 4].addr)
+        w[i] = value
+
+      for i in 16 ..< 64:
+        let
+          s0 =
+            rotateRightBits(w[i - 15], 7) xor
+            rotateRightBits(w[i - 15], 18) xor
+            (w[i - 15] shr 3)
+          s1 =
+            rotateRightBits(w[i - 2], 17) xor
+            rotateRightBits(w[i - 2], 19) xor
+            (w[i - 2] shr 10)
+        w[i] = w[i - 16] + s0 + w[i - 7] + s1
+
+      var
+        a = state[0]
+        b = state[1]
+        c = state[2]
+        d = state[3]
+        e = state[4]
+        f = state[5]
+        g = state[6]
+        h = state[7]
+      for i in 0 ..< 64:
+        let
+          S1 =
+            rotateRightBits(e, 6) xor
+            rotateRightBits(e, 11) xor
+            rotateRightBits(e, 25)
+          ch = (e and f) xor ((not e) and g)
+          temp1 = h + S1 + ch + k[i] + w[i]
+          S0 =
+            rotateRightBits(a, 2) xor
+            rotateRightBits(a, 13) xor
+            rotateRightBits(a, 22)
+          maj = (a and b) xor (a and c) xor (b and c)
+          temp2 = S0 + maj
+        h = g
+        g = f
+        f = e
+        e = d + temp1
+        d = c
+        c = b
+        b = a
+        a = temp1 + temp2
+
+      state[0] += a
+      state[1] += b
+      state[2] += c
+      state[3] += d
+      state[4] += e
+      state[5] += f
+      state[6] += g
+      state[7] += h
+      pos += 64
 
   for i in 0 ..< state.len:
     swapEndian32(result[i * 4].addr, state[i].addr)
