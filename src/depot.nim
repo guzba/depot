@@ -60,6 +60,7 @@ proc getPresignedUrl*(
   objectKey: string,
   httpMethod: string,
   headers: HttpHeaders,
+  query = emptyQueryParams(),
   expires = 604800 # 7 days
 ): string {.raises: [DepotError].} =
   ## Generates a presigned URL. Presigned URLs can be used to grant temporary
@@ -109,6 +110,7 @@ proc getPresignedUrl*(
   params["X-Amz-Date"] = dateTime
   params["X-Amz-Expires"] = $expires
   params["X-Amz-SignedHeaders"] = signedHeaders.join(";")
+  params.add(query)
 
   let
     canonicalRequest = makeCanonicalRequest(
