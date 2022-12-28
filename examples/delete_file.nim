@@ -1,7 +1,7 @@
 import depot, puppy
 
-## This example shows how to use Depot to create a presigned URL for
-## a file upload. This example then uses Puppy to upload the file.
+## This example shows how to use Depot to create a presigned URL to delete an
+## object from a bucket. This example then uses Puppy to make the HTTP request.
 ## You can use Nim's HttpClient, AsyncHttpClient, or any other HTTP client
 ## instead.
 
@@ -27,10 +27,10 @@ headers["Host"] = s3.endpoint
 ## Generate the presigned URL.
 
 let url = s3.getPresignedUrl(
-  "PutObject", # Action
+  "DeleteObject", # Action
   "BUCKET",
   "OBJECT_KEY",
-  "PUT", # HTTP method
+  "DELETE", # HTTP method
   headers # Headers to sign
 )
 
@@ -38,10 +38,10 @@ let url = s3.getPresignedUrl(
 
 headers["Content-Type"] = "text/html"
 
-## Use the presigned URL to upload a simple HTML file.
+## Use the presigned URL.
 
-let response = put(url, headers, "<span>Hello, World!</span>")
-if response.code == 200:
-  echo "Upload!"
+let response = delete(url, headers)
+if response.code == 204:
+  echo "Deleted!"
 else:
-  echo "Upload failed: ", response.code, " ", response.body
+  echo "Request failed: ", response.code, " ", response.body

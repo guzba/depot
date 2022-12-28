@@ -46,8 +46,7 @@ let url = s3.getPresignedUrl(
   "BUCKET",
   "OBJECT_KEY",
   "PUT", # HTTP method
-  headers, # Headers to sign
-  expires = 300 # 5 minutes
+  headers # Headers to sign
 )
 
 ## Add any headers that are not signed.
