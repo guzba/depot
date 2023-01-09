@@ -13,5 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: jiro4989/setup-nim-action@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
     - run: nimble test -y
     - run: nimble test --gc:orc -y
