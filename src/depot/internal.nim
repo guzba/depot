@@ -220,6 +220,8 @@ when defined(amd64):
     mm_storeu_si128(state[0].addr, state0)
     mm_storeu_si128(state[4].addr, state1)
 
+  let canUseIntrinsics = checkInstructionSets({SSE41, SHA})
+
 proc sha256*(s: string): array[32, uint8] =
   var data = s
   data.add 0b10000000.char
@@ -236,7 +238,7 @@ proc sha256*(s: string): array[32, uint8] =
 
   var usedIntrinsics: bool
   when defined(amd64):
-    if checkInstructionSets({SSE41, SHA}):
+    if canUseIntrinsics:
       x64sha256(state, data)
       usedIntrinsics = true
 
