@@ -1,4 +1,4 @@
-import depot/internal, std/algorithm, std/strutils, std/times, webby
+import crunchy, depot/internal, std/algorithm, std/strutils, std/times, webby
 
 export webby
 
