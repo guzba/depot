@@ -1,9 +1,5 @@
 import crunchy
 
-proc `$`*(a: array[32, uint8]): string =
-  result.setLen(32)
-  copyMem(result[0].addr, a[0].unsafeAddr, 32)
-
 proc hmacSha256*(key, data: string): array[32, uint8] =
   const
     blockSize = 64
@@ -12,7 +8,10 @@ proc hmacSha256*(key, data: string): array[32, uint8] =
 
   var blockSizeKey =
     if key.len > blockSize:
-      $sha256(key)
+      let hashedKey = sha256(key)
+      var s = newString(32)
+      copyMem(s[0].addr, hashedKey[0].unsafeAddr, 32)
+      s
     else:
       key
   if blockSizeKey.len < blockSize:
@@ -23,7 +22,10 @@ proc hmacSha256*(key, data: string): array[32, uint8] =
     for c in result.mitems:
       c = (c.uint8 xor value).char
 
-  sha256(
-    applyXor(blockSizeKey, opad) &
-    $sha256(applyXor(blockSizeKey, ipad) & data)
-  )
+  let h = sha256(applyXor(blockSizeKey, ipad) & data)
+
+  var s = applyXor(blockSizeKey, opad)
+  s.setLen(s.len + 32)
+  copyMem(s[s.len - 32].addr, h[0].unsafeAddr, 32)
+
+  sha256(s)
