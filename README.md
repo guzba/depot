@@ -62,4 +62,4 @@ else:
   echo "Upload failed: ", response.code, " ", response.body
 ```
 
-More examples can be found in the [examples/]() directory.
+More examples can be found in the [examples/](https://github.com/guzba/depot/tree/master/examples) directory.
