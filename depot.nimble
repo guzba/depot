@@ -1,4 +1,4 @@
-version     = "0.2.3"
+version     = "0.2.4"
 author      = "Ryan Oldenburg"
 description = "For working with S3-compatible storage APIs"
 license     = "MIT"
