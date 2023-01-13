@@ -125,10 +125,10 @@ proc getPresignedUrl*(
       credentialScope,
       sha256(canonicalRequest).toHex()
     )
-    kDate = $hmacSha256("AWS4" & client.secretKey, date)
-    kRegion = $hmacSha256(kDate, client.region)
-    kService = $hmacSha256(kRegion, "s3")
-    kSigning = $hmacSha256(kService, "aws4_request")
+    kDate = hmacSha256("AWS4" & client.secretKey, date)
+    kRegion = hmacSha256(kDate, client.region)
+    kService = hmacSha256(kRegion, "s3")
+    kSigning = hmacSha256(kService, "aws4_request")
     signature = hmacSha256(kSigning, stringToSign).toHex()
 
   params["X-Amz-Signature"] = signature
