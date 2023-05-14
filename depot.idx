@@ -1,0 +1,4 @@
+DepotError	depot.html#DepotError	depot: DepotError	
+DepotClient	depot.html#DepotClient	depot: DepotClient	
+initDepotClient	depot.html#initDepotClient,string,string,string,string	depot: initDepotClient(accessKey, secretKey, region, endpoint: string): DepotClient	
+getPresignedUrl	depot.html#getPresignedUrl,DepotClient,string,string,string,string,HttpHeaders,int	depot: getPresignedUrl(client: DepotClient; action: string; bucket: string;\n                objectKey: string; httpMethod: string; headers: HttpHeaders;\n                query = emptyQueryParams(); expires = 604800): string	
