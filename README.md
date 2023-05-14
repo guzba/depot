@@ -4,7 +4,7 @@
 
 ![Github Actions](https://github.com/guzba/depot/workflows/Github%20Actions/badge.svg)
 
-[API reference](https://nimdocs.com/guzba/depot)
+[API reference](https://guzba.github.io/depot/)
 
 Depot is a helpful companion for working with S3-compatible storage provider APIs.
 
