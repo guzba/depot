@@ -1,4 +1,5 @@
-DepotError	depot.html#DepotError	depot: DepotError	
-DepotClient	depot.html#DepotClient	depot: DepotClient	
-initDepotClient	depot.html#initDepotClient,string,string,string,string	depot: initDepotClient(accessKey, secretKey, region, endpoint: string): DepotClient	
-getPresignedUrl	depot.html#getPresignedUrl,DepotClient,string,string,string,string,HttpHeaders,int	depot: getPresignedUrl(client: DepotClient; action: string; bucket: string;\n                objectKey: string; httpMethod: string; headers: HttpHeaders;\n                query = emptyQueryParams(); expires = 604800): string	
+nimTitle	depot	depot.html	module src/depot		0
+nim	DepotError	depot.html#DepotError	object DepotError		10
+nim	DepotClient	depot.html#DepotClient	object DepotClient		12
+nim	initDepotClient	depot.html#initDepotClient,string,string,string,string	proc initDepotClient(accessKey, secretKey, region, endpoint: string): DepotClient		18
+nim	getPresignedUrl	depot.html#getPresignedUrl,DepotClient,string,string,string,string,HttpHeaders,int	proc getPresignedUrl(client: DepotClient; action: string; bucket: string;\n                objectKey: string; httpMethod: string; headers: HttpHeaders;\n                query = emptyQueryParams(); expires = 604800): string		56
