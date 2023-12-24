@@ -34,10 +34,6 @@ let url = s3.getPresignedUrl(
   headers # Headers to sign
 )
 
-## Add any headers that are not signed.
-
-headers["Content-Type"] = "text/html"
-
 ## Use the presigned URL.
 
 let response = delete(url, headers)
